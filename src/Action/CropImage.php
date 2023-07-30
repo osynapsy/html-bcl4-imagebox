@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Osynapsy\Bcl4\ImageBox\ImageBox;
+namespace Osynapsy\Bcl4\ImageBox\Action;
 
 use Osynapsy\ImageProcessing\Image;
 use Osynapsy\Action\AbstractAction;
@@ -20,7 +20,7 @@ use Osynapsy\Http\Response\JsonOsynapsy;
  *
  * @author Pietro Celeste <p.celeste@osynapsy.net>
  */
-class Crop extends AbstractAction
+class CropImage extends AbstractAction
 {
     public function execute(JsonOsynapsy $Response, $imageUrl, $cropData, $resizeData, $jsOnSuccess)
     {
@@ -43,7 +43,7 @@ class Crop extends AbstractAction
     protected function getFilepathFromUrl($imageUrl)
     {
         $urlPart = parse_url($imageUrl);
-        return $urlPart['path'];
+        return urldecode($urlPart['path']);
     }
 
     protected function crop($imageHandler, $cropData)

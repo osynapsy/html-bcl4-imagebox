@@ -12,7 +12,7 @@ BclImageBox =
                 1000
             );
         });
-        $('.osy-imagebox-bcl').on('change','input[type=file]',function(){
+        $('.osy-imagebox-bcl').parent().on('change','input[type=file]',function(){
             BclImageBox.upload(this);
         }).on('click','.crop-command', function(){
             BclImageBox.crop(this);

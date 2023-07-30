@@ -15,7 +15,7 @@ use Osynapsy\Html\Component\AbstractComponent;
 use Osynapsy\Html\Tag;
 use Osynapsy\Html\Component\InputHidden;
 use Osynapsy\Html\Component\Image;
-use Osynapsy\Helper\Upload;
+use Osynapsy\Bcl4\Button;
 
 class ImageBox extends AbstractComponent
 {
@@ -194,21 +194,9 @@ class ImageBox extends AbstractComponent
         $this->attribute('data-preserve-aspect-ratio', empty($value) ? 0 : 1);
     }
 
-    public static function uploadAction($response, $componentId, $repoPath = '/upload')
+    public function setRepoPath($repoPath)
     {
-        $filename = (new Upload($componentId, $repoPath))->save();
-        $response->js(sprintf("document.getElementById('%s').value = '%s'", $componentId, $filename));
-        $response->js(sprintf("Osynapsy.refreshComponents(['%s_box']);", $componentId));
-    }
-
-    public static function deleteAction($response, $componentId, $filename)
-    {
-        $fullFilePath = $_SERVER['DOCUMENT_ROOT'].$filename;
-        if (!is_file($fullFilePath)) {
-            throw new \Exception(sprintf('Il file %s non esiste. Impossibile eliminarlo', $filename));
-        }
-        @unlink($fullFilePath);
-        $response->js(sprintf("document.getElementById('%s').value = ''", $componentId));
-        $response->js(sprintf("Osynapsy.refreshComponents(['%s_box']);", $componentId));
+        $oldActionParameters = $this->getAttribute('data-action-parameters');
+        $this->attribute('data-action-parameters', implode(',', [$oldActionParameters, $repoPath]));
     }
 }
