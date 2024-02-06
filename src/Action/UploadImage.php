@@ -22,12 +22,12 @@ use Osynapsy\Helper\Upload;
  */
 class UploadImage extends AbstractAction
 {
-    public function execute(JsonOsynapsy $Response, $componentId, $repoPath = '/upload')
+    public function execute($componentId, $repoPath = '/upload')
     {
         try {
             $filename = (new Upload($componentId, $repoPath))->save();
-            $Response->js(sprintf("document.getElementById('%s').value = '%s'", $componentId, $filename));
-            $Response->js(sprintf("Osynapsy.refreshComponents(['%s_box'], function(){ BclImageBox.init(); });", $componentId));
+            $this->getController()->js(sprintf("document.getElementById('%s').value = '%s'", $componentId, $filename));
+            $this->getController()->js(sprintf("Osynapsy.refreshComponents(['%s_box'], function(){ BclImageBox.init(); });", $componentId));
         } catch (\Exception $e) {
             return $e->getMessage();
         }

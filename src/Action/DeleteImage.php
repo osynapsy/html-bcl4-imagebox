@@ -12,7 +12,6 @@
 namespace Osynapsy\Bcl4\ImageBox\Action;
 
 use Osynapsy\Action\AbstractAction;
-use Osynapsy\Http\Response\JsonOsynapsy;
 
 /**
  * Description of CropTrait
@@ -21,7 +20,7 @@ use Osynapsy\Http\Response\JsonOsynapsy;
  */
 class DeleteImage extends AbstractAction
 {
-    public function execute(JsonOsynapsy $Response, $componentId, $filename)
+    public function execute($componentId, $filename)
     {
         try {
             $fullFilePath = $_SERVER['DOCUMENT_ROOT'].$filename;
@@ -29,9 +28,9 @@ class DeleteImage extends AbstractAction
                 throw new \Exception(sprintf('Il file %s non esiste. Impossibile eliminarlo', $filename));
             }
             @unlink($fullFilePath);
-            $Response->js(sprintf("document.getElementById('%s').value = ''", $componentId));
-            $Response->js(sprintf("document.getElementById('_%s').value = ''", $componentId));
-            $Response->js(sprintf("Osynapsy.refreshComponents(['%s_box'], function() { BclImageBox.init(); });", $componentId));
+            $this->getController()->js(sprintf("document.getElementById('%s').value = ''", $componentId));
+            $this->getController()->js(sprintf("document.getElementById('_%s').value = ''", $componentId));
+            $this->getController()->js(sprintf("Osynapsy.refreshComponents(['%s_box'], function() { BclImageBox.init(); });", $componentId));
         } catch (\Exception $e) {
             return $e->getMessage();
         }

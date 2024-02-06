@@ -22,7 +22,7 @@ use Osynapsy\Http\Response\JsonOsynapsy;
  */
 class CropImage extends AbstractAction
 {
-    public function execute(JsonOsynapsy $Response, $imageUrl, $cropData, $resizeData, $jsOnSuccess)
+    public function execute($imageUrl, $cropData, $resizeData, $jsOnSuccess)
     {
         try {
             $documentRoot = $_SERVER['DOCUMENT_ROOT'];
@@ -34,7 +34,7 @@ class CropImage extends AbstractAction
             }
             $newFilename = $this->buildFilename($filename);
             $imageHandler->save($documentRoot.$newFilename);
-            $Response->js(sprintf(base64_decode($jsOnSuccess), $newFilename));
+            $this->getController()->js(sprintf(base64_decode($jsOnSuccess), $newFilename));
         } catch (\Exception $e) {
             return $e->getMessage();
         }
